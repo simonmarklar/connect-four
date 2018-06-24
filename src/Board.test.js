@@ -18,10 +18,10 @@ test('correct amount of slots should be created', () => {
 });
 
 test('should draw the right amount of slots', () => {
+  const mockSlotDraw = jest.fn();
+  //$FlowFixMe
+  Slot.prototype.draw = mockSlotDraw
   const board = new Board(2, 2);
-  //$FlowFixMe - flow cannot detect the jest mock
-  const mockSlot = Slot.mock.instances[0];
-  const mockSlotDraw = mockSlot.draw;
   board.draw();
   expect(mockSlotDraw).toHaveBeenCalledTimes(2 * 2)
 })
