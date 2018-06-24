@@ -1,0 +1,21 @@
+{
+  "name": "connect-four",
+  "version": "1.0.0",
+  "description": "Javascript console based version of Connect Four",
+  "main": "index.js",
+  "repository": "https://github.com/simonmarklar/connect-four",
+  "author": "Simon Dobie <simondobie23@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "flow-bin": "^0.75.0",
+    "jest": "^23.1.0"
+  },
+  "dependencies": {
+    "chalk": "2.4.1"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  }
+}
