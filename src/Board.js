@@ -49,11 +49,16 @@ class Board {
   }
 
   canDrop (column/* : number */) {
-    const col = this.getColumn(column);
-    return col.some((c) => !c.isTaken)
+    try {
+      const col = this.getColumn(column);
+      return col.some((c) => !c.isTaken);
+    } catch (e) {
+      return false;
+    }
   }
 
   drop (column/* : number */, playerId/* : PLAYER_ENUM */) {
+    if (!this.canDrop(column)) return;
     const col = this.getColumn(column);
     let row = this.rows - 1;
     while (row > -1) {
