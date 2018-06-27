@@ -66,6 +66,13 @@ test('should disallow drop when all slots in column are taken', () => {
   expect(board.canDrop(1)).toBe(false);
 });
 
+test('should disallow drop when all invalid coumn is selected', () => {
+  const board = new Board(3, 3);
+  //$FlowFixMe - force no free slots
+  Slot.prototype.isTaken = true;
+  expect(board.canDrop(100)).toBe(false);
+});
+
 test('should drop a chip into the right column and row', () => {
   const board = new Board(4, 3);
   const mockSlotTake = jest.fn();

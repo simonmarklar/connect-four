@@ -1,6 +1,6 @@
 //@flow
 'use strict';
-const readline = require('readline')
+const readline = require('readline');
 
 module.exports = class Screen {
   /*:: tty: readline.Interface*/
@@ -13,6 +13,6 @@ module.exports = class Screen {
   }
 
   draw ()/*: void */ {
-    throw new Error('not implemented')
+    throw new Error('not implemented');
   }
 }
