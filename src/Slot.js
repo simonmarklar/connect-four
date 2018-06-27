@@ -1,17 +1,17 @@
 //@flow
 'use strict';
-
+/*:: import type {PLAYER_ENUM} from './constants' */
 const chalk = require('chalk');
 
 const {PLAYER_ONE, PLAYER_TWO} = require('./constants');
 
 class Slot {
-  /*:: takenBy: string */
+  /*:: takenBy: PLAYER_ENUM */
   get isTaken () {
     return !!this.takenBy;
   }
 
-  take (playerId/*: string */) {
+  take (playerId/*: PLAYER_ENUM */) {
     this.takenBy = playerId
   }
 
