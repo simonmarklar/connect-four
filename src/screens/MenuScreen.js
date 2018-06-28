@@ -9,8 +9,7 @@ module.exports = class MenuScreen extends Screen {
   processInput (input/* : string */) {
     switch (input.trim()) {
       case 'p':
-        console.log('Game not implemented yet, sorry!');
-        this.draw();
+        this.emit('play');
         break;
       case 'q':
         process.exit(0);
@@ -19,7 +18,9 @@ module.exports = class MenuScreen extends Screen {
         this.draw();
     }
   }
+
   draw () {
+    this.clearScreen();
     this.tty.question(chalk`{green
 _________                                     __   
 \\_   ___ \\  ____   ____   ____   ____   _____/  |_ 

@@ -28,3 +28,10 @@ test('`q` will exit the game correctly', () => {
   expect(exitSpy).toHaveBeenCalledWith(0);
   menuScreen.tty.close();
 })
+
+test('`p` will fire the play event', () => {
+  const eventSpy = jest.fn();
+  menuScreen.on('play', eventSpy);
+  menuScreen.processInput('p');
+  expect(eventSpy).toHaveBeenCalled();
+});

@@ -1,9 +1,7 @@
+//@flow
 'use strict';
-const Player = require('./src/Player');
-const Ask = require('./src/strategies/Ask')
 
-const MenuScreen = require('./src/screens/MenuScreen');
+const ScreenManager = require('./src/ScreenManager');
 
-const menu = new MenuScreen();
-
-menu.draw();
+const sm = new ScreenManager();
+sm.showMenu();
