@@ -42,6 +42,10 @@ module.exports = class GameScreen extends Screen {
 
   update () {
     this.message = '';
+    if (this.board.isFull) {
+      this.emit('finished', 'draw');
+      return Promise.resolve();
+    }
     return this.players[this.currentPlayer]
       .play(this.board)
       .then(column => this.board.drop(column, this.currentPlayer === 0 ? PLAYER_ONE : PLAYER_TWO))

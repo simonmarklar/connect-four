@@ -22,6 +22,10 @@ class Board {
     }
   }
 
+  get isFull () {
+    return [...Array(this.columns).keys()].filter((col) => this.canDrop(col)).length === 0
+  }
+
   getRow (row/* : number */) {
     if (row < 0 || row >= this.rows) {
       throw new Error('Cannot get out of bounds row')
