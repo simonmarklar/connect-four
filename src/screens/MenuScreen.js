@@ -12,7 +12,7 @@ const { TWO_PLAYER, EASY_AI } = require('../constants');
 
 module.exports = class MenuScreen extends Screen {
   processInput (input/* : string */) {
-    switch (input.trim()) {
+    switch (input.trim().toLowerCase()) {
       case 'p':
         this.emit('play', TWO_PLAYER);
         break;
@@ -44,7 +44,7 @@ ___________
      \\/                       
 
   Two player ({red p})lay
-  ({red E})asy AI
+  ({red e})asy AI
   ({red q})uit
 }`, (input) => this.processInput(input))
   }
