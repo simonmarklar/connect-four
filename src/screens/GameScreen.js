@@ -15,6 +15,7 @@ module.exports = class GameScreen extends Screen {
     board: Board 
     players: Player[]
     currentPlayer: number
+    message: string
   */
 
   constructor () {
@@ -23,6 +24,7 @@ module.exports = class GameScreen extends Screen {
     this.players = [];
     this.players.push(new Player(new Ask(this.tty, `Select a column (1 to ${this.board.columns}): `)));
     this.currentPlayer = 0;
+    this.message = ''
   }
 
   update () {
@@ -30,15 +32,28 @@ module.exports = class GameScreen extends Screen {
       .play(this.board)
       .then(column => this.draw())
       .catch((err) => {
-        this.tty.write(`
-${err}
-`);
+        this.message = err.message;
         return this.draw();
-      })
+      });
   }
 
   draw () {
+    this.clearScreen();
+    this.tty.write(`
+    
+`);
     this.tty.write(chalk.green(this.board.draw()));
+    
+    if ( this.message ) {
+      this.tty.write(`${chalk.red(this.message)}
+
+`);
+      this.message = '';
+    } else {
+      this.tty.write(`
+    
+`);
+    }
     this.update();
   }
 }
