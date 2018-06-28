@@ -43,7 +43,10 @@ module.exports = class GameScreen extends Screen {
   update () {
     this.message = '';
     if (this.board.isFull) {
-      this.emit('finished', 'draw');
+      this.tty.write(`${chalk.red('oh no! stalemate!')}
+
+`);
+      setTimeout(() => this.emit('finished', 'draw'), 3000);
       return Promise.resolve();
     }
     return this.players[this.currentPlayer]
