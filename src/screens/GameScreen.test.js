@@ -6,6 +6,8 @@ const Ask = require('../strategies/Ask');
 const GameScreen = require('./GameScreen');
 const {TWO_PLAYER, PLAYER_ONE, PLAYER_TWO} = require('../constants');
 
+jest.useFakeTimers();
+
 jest.mock('../Board');
 jest.mock('../Player');
 jest.mock('../strategies/Ask');
@@ -58,5 +60,8 @@ test('should fire the finished event if the board is full', () => {
   const finishedSpy = jest.fn();
   gs.on('finished', finishedSpy);
   gs.update();
+  jest.runAllTimers();
+  expect(setTimeout).toHaveBeenCalledTimes(1);
+  expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 3000);
   expect(finishedSpy).toHaveBeenCalled();
 })
