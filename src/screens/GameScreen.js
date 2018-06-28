@@ -12,7 +12,8 @@ const Screen = require('./Screen');
 const Board = require('../Board');
 const Player = require('../Player');
 const Ask = require('../strategies/Ask');
-const {TWO_PLAYER, PLAYER_ONE, PLAYER_TWO} = require('../constants');
+const Random = require('../strategies/Random');
+const {TWO_PLAYER, EASY_AI, PLAYER_ONE, PLAYER_TWO} = require('../constants');
 
 module.exports = class GameScreen extends Screen {
   /*:: 
@@ -29,7 +30,11 @@ module.exports = class GameScreen extends Screen {
     this.players.push(new Player(new Ask(this.tty, `Player 1, Select a column (1 to ${this.board.columns}): `)));
     switch (mode) {
       case TWO_PLAYER:
-        this.players.push(new Player(new Ask(this.tty, `Player 2, Select a column (1 to ${this.board.columns}): `)))
+        this.players.push(new Player(new Ask(this.tty, `Player 2, Select a column (1 to ${this.board.columns}): `)));
+        break;
+      case EASY_AI:
+        this.players.push(new Player(new Random()));
+        break;
     }
     this.currentPlayer = 0;
     this.message = ''
