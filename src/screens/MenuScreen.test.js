@@ -1,6 +1,7 @@
 //@flow
 'use strict';
 const MenuScreen = require('./MenuScreen');
+const {TWO_PLAYER} = require('../constants');
 
 let menuScreen
 
@@ -33,5 +34,5 @@ test('`p` will fire the play event', () => {
   const eventSpy = jest.fn();
   menuScreen.on('play', eventSpy);
   menuScreen.processInput('p');
-  expect(eventSpy).toHaveBeenCalled();
+  expect(eventSpy).toHaveBeenCalledWith(TWO_PLAYER);
 });

@@ -22,7 +22,7 @@ module.exports = class Ask /* implements Strategy */ {
     return new Promise((resolve, reject) => {
       this.tty.question(this.question, (input/* : string */) => {
         const column = parseInt(input.trim(), 10);
-        if (!Number.isInteger(column) || !board.canDrop(column)) {
+        if (!Number.isInteger(column) || !board.canDrop(column - 1)) {
           return reject(new Error('Invalid Input. Try again.'));
         }
 

@@ -1,15 +1,20 @@
 //@flow
 'use strict';
 
+/*:: 
+import type {GAME_MODE} from '../constants.js'
+*/
+
 const chalk = require('chalk');
 
 const Screen = require('./Screen');
+const { TWO_PLAYER } = require('../constants');
 
 module.exports = class MenuScreen extends Screen {
   processInput (input/* : string */) {
     switch (input.trim()) {
       case 'p':
-        this.emit('play');
+        this.emit('play', TWO_PLAYER);
         break;
       case 'q':
         process.exit(0);
@@ -35,7 +40,7 @@ ___________
  \\___  / \\____/|____/ |__|   
      \\/                       
 
-  ({red p})lay
+  Two player ({red p})lay
   ({red q})uit
 }`, (input) => this.processInput(input))
   }
