@@ -51,3 +51,12 @@ test('should player 2 should go after player 1', () => {
       expect(player2Mock.play).toHaveBeenCalledTimes(1);
     });
 });
+
+test('should fire the finished event if the board is full', () => {
+  const gs = new GameScreen(TWO_PLAYER);
+  Board.mock.instances[0].isFull = true;
+  const finishedSpy = jest.fn();
+  gs.on('finished', finishedSpy);
+  gs.update();
+  expect(finishedSpy).toHaveBeenCalled();
+})
