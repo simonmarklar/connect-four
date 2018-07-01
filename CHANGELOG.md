@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## v1.0.0
 - i21 # Allow player to quit mid game
 - i5 # check if game is finished after move
 - i19 # show a message to the winner
