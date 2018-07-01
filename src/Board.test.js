@@ -81,3 +81,12 @@ test('returns false if the board is not full', () => {
   Slot.mock.instances.forEach((s) => (s.isTaken = false));
   expect(board.isFull).toBe(false);
 });
+
+test('should throw if a row or coloumn is out of bounds', () => {
+  const board = new Board(2, 2);
+  expect(() => board.getRow(-1)).toThrowError('Selection is less than 0 or greater than 2');
+  expect(() => board.getRow(2)).toThrowError('Selection is less than 0 or greater than 2');
+  
+  expect(() => board.getColumn(-1)).toThrowError('Selection is less than 0 or greater than 2');
+  expect(() => board.getColumn(2)).toThrowError('Selection is less than 0 or greater than 2');
+});
