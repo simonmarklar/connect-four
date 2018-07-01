@@ -19,6 +19,7 @@ beforeEach(() => {
   Player.mockClear();
   Board.mockClear();
   Analyser.mockClear();
+  setTimeout.mockClear();
 })
 
 test('should create two human players', () => {
@@ -64,9 +65,27 @@ test('should fire the finished event if the board is full', () => {
   Board.mock.instances[0].isFull = true;
   const finishedSpy = jest.fn();
   gs.on('finished', finishedSpy);
-  gs.update();
-  jest.runAllTimers();
-  expect(setTimeout).toHaveBeenCalledTimes(1);
-  expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 3000);
-  expect(finishedSpy).toHaveBeenCalled();
-})
+  gs.update()
+    .then(() => {
+      jest.runAllTimers();
+      expect(setTimeout).toHaveBeenCalledTimes(1);
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 3000);
+      expect(finishedSpy).toHaveBeenCalled();
+    })
+});
+
+test('should fire the finish event if a player gives up', () => {
+  const gs = new GameScreen(TWO_PLAYER);
+  Board.mock.instances[0].isFull = false;
+  Player.mock.instances[0].play.mockRejectedValue(new Error('Player gave up'));
+  const finishedSpy = jest.fn();
+  gs.on('finished', finishedSpy);
+  return gs.update()
+    .then(() => {
+      jest.runAllTimers();
+      expect(setTimeout).toHaveBeenCalledTimes(1);
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 3000);
+      expect(finishedSpy).toHaveBeenCalled();
+    })
+  
+});
