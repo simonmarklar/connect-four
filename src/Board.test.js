@@ -66,8 +66,9 @@ test('should disallow drop when invalid coumn is selected', () => {
 test('should drop a chip into the right column and row', () => {
   const board = new Board(4, 3);
   Slot.mock.instances.forEach((s) => (s.isTaken = false));
-  board.drop(3, PLAYER_ONE);
+  const result = board.drop(3, PLAYER_ONE);
   expect(board.store[2][3].take).toHaveBeenCalledWith(PLAYER_ONE);
+  expect(result).toEqual(expect.arrayContaining([2, 3]));
 });
 
 test('returns true if the board is full', () => {

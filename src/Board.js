@@ -69,7 +69,7 @@ class Board {
     }
   }
 
-  drop (column/* : number */, playerId/* : PLAYER_ENUM */) {
+  drop (column/* : number */, playerId/* : PLAYER_ENUM */)/* : ?[number, number] */ {
     if (!this.canDrop(column)) return;
     const col = this.getColumn(column);
     let row = this.rows - 1;
@@ -77,7 +77,7 @@ class Board {
       const slot = col[row];
       if (!slot.isTaken) {
         slot.take(playerId);
-        return
+        return [row, column];
       }
       --row;
     }
