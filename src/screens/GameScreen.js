@@ -30,10 +30,10 @@ module.exports = class GameScreen extends Screen {
     this.board = new Board(7, 6);
     this.analyser = new Analyser(this.board);
     this.players = [];
-    this.players.push(new Player(new Ask(this.tty, `Player 1, Select a column (1 to ${this.board.columns}): `)));
+    this.players.push(new Player(new Ask(this.tty, `Player 1, Select a column (1 to ${this.board.columns}) or 'q' to give up: `)));
     switch (mode) {
       case TWO_PLAYER:
-        this.players.push(new Player(new Ask(this.tty, `Player 2, Select a column (1 to ${this.board.columns}): `)));
+        this.players.push(new Player(new Ask(this.tty, `Player 2, Select a column (1 to ${this.board.columns}) or 'q' to give up: `)));
         break;
       case EASY_AI:
         this.players.push(new Player(new Random()));
@@ -92,6 +92,10 @@ module.exports = class GameScreen extends Screen {
       this.tty.write(`
     
 `);
+    }
+    if (this.message === 'Player gave up') {
+      setTimeout(() => this.emit('finished'), 3000);
+      return
     }
     this.update();
   }

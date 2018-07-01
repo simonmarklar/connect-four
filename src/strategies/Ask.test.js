@@ -41,3 +41,10 @@ test('should reject if an column is full', () => {
   return expect(result).rejects.toThrow('Invalid Input. Try again.');
 });
 
+test('should reject if the player quits', () => {
+  const mockQuestion = jest.fn((q, cb) => cb('q'));
+  const board = new Board(2, 2);
+  const ask = new Ask({question: mockQuestion}, 'test');
+  return expect(ask.execute(board)).rejects.toThrow('Player gave up');
+})
+
