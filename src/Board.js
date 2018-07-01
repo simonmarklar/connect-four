@@ -69,8 +69,7 @@ class Board {
     }
   }
 
-  drop (column/* : number */, playerId/* : PLAYER_ENUM */)/* : ?[number, number] */ {
-    if (!this.canDrop(column)) return;
+  drop (column/* : number */, playerId/* : PLAYER_ENUM */)/* : [number, number] */ {
     const col = this.getColumn(column);
     let row = this.rows - 1;
     while (row > -1) {
@@ -81,6 +80,8 @@ class Board {
       }
       --row;
     }
+
+    throw new Error('Column is full!');
   }
 
   draw() {

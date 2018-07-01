@@ -8,7 +8,7 @@ const {PLAYER_ONE, PLAYER_TWO} = require('./constants');
 class Slot {
   /*:: takenBy: PLAYER_ENUM */
   get isTaken () {
-    return !!this.takenBy;
+    return this.takenBy === PLAYER_ONE || this.takenBy === PLAYER_TWO;
   }
 
   take (playerId/*: PLAYER_ENUM */) {

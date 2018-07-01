@@ -18,7 +18,7 @@ module.exports = class Analyser {
   analyse (row/* : number */, col/* : number */, currentPlayer/* : PLAYER_ENUM */) {
     return [
       [-1, -1], [-1, 0], [-1, 1],
-      [0, -1],  [0, 0],  [0, 1],
+      [0, -1],  [0, 1],
       [1, -1],  [1, 0],  [1, 1]
     ].some(dir => this.check(row, col, dir, currentPlayer))
   }
