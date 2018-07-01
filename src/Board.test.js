@@ -66,8 +66,9 @@ test('should disallow drop when invalid coumn is selected', () => {
 test('should drop a chip into the right column and row', () => {
   const board = new Board(4, 3);
   Slot.mock.instances.forEach((s) => (s.isTaken = false));
-  board.drop(3, PLAYER_ONE);
+  const result = board.drop(3, PLAYER_ONE);
   expect(board.store[2][3].take).toHaveBeenCalledWith(PLAYER_ONE);
+  expect(result).toEqual(expect.arrayContaining([2, 3]));
 });
 
 test('returns true if the board is full', () => {
@@ -80,4 +81,13 @@ test('returns false if the board is not full', () => {
   const board = new Board(7, 5);
   Slot.mock.instances.forEach((s) => (s.isTaken = false));
   expect(board.isFull).toBe(false);
+});
+
+test('should throw if a row or coloumn is out of bounds', () => {
+  const board = new Board(2, 2);
+  expect(() => board.getRow(-1)).toThrowError('Selection is less than 0 or greater than 2');
+  expect(() => board.getRow(2)).toThrowError('Selection is less than 0 or greater than 2');
+  
+  expect(() => board.getColumn(-1)).toThrowError('Selection is less than 0 or greater than 2');
+  expect(() => board.getColumn(2)).toThrowError('Selection is less than 0 or greater than 2');
 });

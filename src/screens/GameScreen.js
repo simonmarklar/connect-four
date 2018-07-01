@@ -3,7 +3,7 @@
 
 /*:: 
 import type {Strategy} from '../../types.js' 
-import type {GAME_MODE} from '../constants.js'
+import type {GAME_MODE, PLAYER_ENUM} from '../constants.js'
 */
 
 const chalk = require('chalk');
@@ -13,19 +13,22 @@ const Board = require('../Board');
 const Player = require('../Player');
 const Ask = require('../strategies/Ask');
 const Random = require('../strategies/Random');
+const Analyser = require('../Analyser');
 const {TWO_PLAYER, EASY_AI, PLAYER_ONE, PLAYER_TWO} = require('../constants');
 
 module.exports = class GameScreen extends Screen {
   /*:: 
     board: Board 
+    analyser: Analyser
     players: Player[]
-    currentPlayer: number
+    currentPlayer: PLAYER_ENUM
     message: string
   */
 
   constructor (mode/* : GAME_MODE */) {
     super();
     this.board = new Board(7, 6);
+    this.analyser = new Analyser(this.board);
     this.players = [];
     this.players.push(new Player(new Ask(this.tty, `Player 1, Select a column (1 to ${this.board.columns}): `)));
     switch (mode) {
@@ -36,7 +39,7 @@ module.exports = class GameScreen extends Screen {
         this.players.push(new Player(new Random()));
         break;
     }
-    this.currentPlayer = 0;
+    this.currentPlayer = PLAYER_ONE;
     this.message = ''
   }
 
@@ -46,15 +49,23 @@ module.exports = class GameScreen extends Screen {
       this.tty.write(`${chalk.red('oh no! stalemate!')}
 
 `);
-      setTimeout(() => this.emit('finished', 'draw'), 3000);
+      setTimeout(() => this.emit('finished'), 3000);
       return Promise.resolve();
     }
     return this.players[this.currentPlayer]
       .play(this.board)
-      .then(column => this.board.drop(column, this.currentPlayer === 0 ? PLAYER_ONE : PLAYER_TWO))
-      .then(() => {
-        this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
-        this.draw();
+      .then(column => this.board.drop(column, this.currentPlayer))
+      .then(([row, col]) => {
+        if (this.analyser.analyse(row, col, this.currentPlayer)) {
+          this.drawBoard();
+          this.tty.write(`${chalk.red(`Player ${this.currentPlayer === PLAYER_ONE ? 'one' : 'two'} wins!`)}
+
+`);
+          setTimeout(() => this.emit('finished'), 3000);
+        } else {
+          this.currentPlayer = this.currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
+          this.draw();
+        }
       })
       .catch((err) => {
         this.message = err.message;
@@ -62,13 +73,17 @@ module.exports = class GameScreen extends Screen {
       });
   }
 
-  draw () {
+  drawBoard () {
     this.clearScreen();
     this.tty.write(`
     
 `);
     this.tty.write(chalk.green(this.board.draw()));
     
+  }
+
+  draw () {
+    this.drawBoard();
     if ( this.message ) {
       this.tty.write(`${chalk.red(this.message)}
 

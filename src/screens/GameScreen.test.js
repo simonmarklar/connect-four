@@ -4,18 +4,21 @@ const Board = require('../Board');
 const Player = require('../Player');
 const Ask = require('../strategies/Ask');
 const GameScreen = require('./GameScreen');
+const Analyser = require('../Analyser');
 const {TWO_PLAYER, PLAYER_ONE, PLAYER_TWO} = require('../constants');
 
 jest.useFakeTimers();
 
 jest.mock('../Board');
 jest.mock('../Player');
+jest.mock('../Analyser');
 jest.mock('../strategies/Ask');
 
 beforeEach(() => {
   Ask.mockClear();
   Player.mockClear();
   Board.mockClear();
+  Analyser.mockClear();
 })
 
 test('should create two human players', () => {
@@ -41,6 +44,8 @@ test('should player 2 should go after player 1', () => {
   const player1Mock = Player.mock.instances[0];
   const player2Mock = Player.mock.instances[1];
 
+  Analyser.mock.instances[0].analyse.mockReturnValue(false);
+  Board.mock.instances[0].drop.mockReturnValue([0 , 0]);
   player1Mock.play.mockResolvedValue(1);
   player2Mock.play.mockResolvedValue(1);
 

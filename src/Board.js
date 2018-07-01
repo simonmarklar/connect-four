@@ -3,6 +3,11 @@
 /*:: import type {PLAYER_ENUM} from './constants' */
 const Slot = require('./Slot');
 
+const boundsCheck = (index, max) => {
+  if (index < 0 || index >= max) {
+    throw new Error(`Selection is less than 0 or greater than ${max}`);
+  }
+}
 
 class Board {
   /*:: columns: number */
@@ -27,19 +32,22 @@ class Board {
   }
 
   getRow (row/* : number */) {
-    if (row < 0 || row >= this.rows) {
-      throw new Error('Cannot get out of bounds row')
-    }
+    boundsCheck(row, this.rows);
 
     return this.store[row]
   }
 
   getColumn (column/* : number */) {
-    if (column < 0 || column >= this.columns) {
-      throw new Error('Cannot get out of bounds column')
-    }
+    boundsCheck(column, this.columns);
 
     return this.store.reduce((m, row) => [...m, row[column]], [])
+  }
+
+  getSlot (row/* : number */, col/* : number */) {
+    boundsCheck(row, this.rows);
+    boundsCheck(col, this.columns);
+
+    return this.store[row][col];
   }
 
   createStore () {
@@ -61,18 +69,19 @@ class Board {
     }
   }
 
-  drop (column/* : number */, playerId/* : PLAYER_ENUM */) {
-    if (!this.canDrop(column)) return;
+  drop (column/* : number */, playerId/* : PLAYER_ENUM */)/* : [number, number] */ {
     const col = this.getColumn(column);
     let row = this.rows - 1;
     while (row > -1) {
       const slot = col[row];
       if (!slot.isTaken) {
         slot.take(playerId);
-        return
+        return [row, column];
       }
       --row;
     }
+
+    throw new Error('Column is full!');
   }
 
   draw() {
